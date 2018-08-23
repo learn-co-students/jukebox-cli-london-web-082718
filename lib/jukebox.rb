@@ -23,40 +23,58 @@ end
 
 def list(songs)
 
-songs.each_with_index { |track, index| puts "#{index}. #{track}" }
+songs.each_with_index { |track, index| puts "#{index + 1}. #{track}" }
 
 end
-
 
   def play(songs)
-
   puts "Please enter a song name or number:"
-  response = gets.chomp
-  songs.each do |track|
-    if response == track
-      puts "Playing #{response}"
-      else
+  user_response = gets.chomp
+    songs.each.with_index do |track, index|
+        if user_response == track 
+        puts "Playing #{user_response}"
+        elsif user_response.to_i == index + 1
+        puts "Playing #{songs[index + 1]}"
+        else
       puts "Invalid input, please try again"
+      end
+    end
 end
-end
+
+def play(songs)
+  puts "Please enter a song name or number:"
+  user_response = gets.chomp 
+  
+  if (1..9).to_a.include?(user_response.to_i)
+    puts "Playing #{songs[user_response.to_i - 1]}"
+    elsif songs.include?(user_response)
+    puts "Playing #{user_response}"
+  else 
+    puts "Invalid input, please try again"
+  end 
+end 
 
 def exit_jukebox
   puts "Goodbye"
 end
 
+
 def run(songs)
-
-help
-
-puts "Please enter a command:"
-response2 = gets.chomp
-
-if response2 = list
-  list
-elsif response2 = play
-play
-elsif response2 = exit
-exit_jukebox
+  help
+  loop do
+    puts "Please enter a command:"
+    input = gets.chomp
+    case input
+    when 'play'
+      play(songs)
+    when 'help'
+      help
+    when 'list'
+      list(songs)
+    when 'exit'
+      break
+    end
+  end
+  exit_jukebox
 end
-end
-end
+
